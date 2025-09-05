@@ -6,9 +6,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
-// This global declaration helps TypeScript understand that the Razorpay object will be attached to the window
+// ========= ⬇️ CHANGE #1 IS HERE ⬇️ =========
 declare global {
-  interface Window { Razorpay: any; }
+  interface Window { Razorpay: unknown; }
 }
 
 const loadRazorpayScript = (src: string) => {
@@ -38,7 +38,7 @@ export default function PaymentPage() {
     }
   }, [imageSrc]);
 
-  // ========= ⬇️ CHANGE #1 IS HERE ⬇️ =========
+  // Using a specific type for the response object
   const handlePaymentSuccess = async (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) => {
     console.log('Payment was successful!', response);
     
@@ -115,7 +115,7 @@ export default function PaymentPage() {
     };
     
     // ========= ⬇️ CHANGE #2 IS HERE ⬇️ =========
-    const rzp = new (window as any).Razorpay(options);
+    const rzp = new (window.Razorpay as any)(options);
     rzp.open();
   };
   
