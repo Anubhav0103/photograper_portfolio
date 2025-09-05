@@ -112,8 +112,6 @@ export default function PaymentPage() {
       modal: { ondismiss: () => setIsLoading(false) }
     };
     
-    // ========= ⬇️ THIS IS THE FINAL FIX ⬇️ =========
-    // This comment disables the ESLint rule for the next line only
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const rzp = new (window.Razorpay as any)(options);
     rzp.open();
@@ -142,7 +140,7 @@ export default function PaymentPage() {
               {imageSize.width > 0 ? (
                 <Image src={imageSrc} alt="Photograph for purchase" fill className="object-contain" sizes="100vw" priority />
               ) : (
-                <div className="w-full h-full bg-gray-800 animate-pulse"></div>
+                <div className="w-full h-full bg-gray-800 animate-animate-pulse"></div>
               )}
             </div>
 
@@ -160,4 +158,19 @@ export default function PaymentPage() {
                   className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200"
                   required
                 />
-              <
+              </div>
+
+              <div className="bg-gray-700 rounded-lg p-4 mb-6">
+                <p className="text-gray-300 text-lg">Total Price</p>
+                <p className="text-5xl font-bold text-white">₹50</p>
+              </div>
+
+              <button onClick={handlePayment} disabled={isLoading} className="w-full bg-blue-600 text-white font-bold py-4 px-4 rounded-lg text-xl hover:bg-blue-700 transition-transform transform hover:scale-105 disabled:bg-gray-500 disabled:scale-100 disabled:cursor-not-allowed">
+                {isLoading ? 'Processing...' : 'Pay Securely with Razorpay'}
+              </button>
+              <Link href="/" className="block mt-6 text-gray-400 hover:text-white transition-colors">&larr; Back to Gallery</Link>
+            </div>
+        </div>
+    </div>
+  );
+        }
