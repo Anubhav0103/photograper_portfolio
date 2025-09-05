@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
+// This global declaration helps TypeScript understand that the Razorpay object will be attached to the window
 declare global {
   interface Window { Razorpay: any; }
 }
@@ -37,7 +38,8 @@ export default function PaymentPage() {
     }
   }, [imageSrc]);
 
-  const handlePaymentSuccess = async (response: any) => {
+  // ========= ⬇️ CHANGE #1 IS HERE ⬇️ =========
+  const handlePaymentSuccess = async (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) => {
     console.log('Payment was successful!', response);
     
     if (!imageSrc || !email) return;
@@ -112,13 +114,11 @@ export default function PaymentPage() {
       modal: { ondismiss: () => setIsLoading(false) }
     };
     
-    const rzp = new window.Razorpay(options);
+    // ========= ⬇️ CHANGE #2 IS HERE ⬇️ =========
+    const rzp = new (window as any).Razorpay(options);
     rzp.open();
   };
   
-  // ====================================================================
-  // THIS IS THE CORRECTED BLOCK
-  // ====================================================================
   if (!imageSrc) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
